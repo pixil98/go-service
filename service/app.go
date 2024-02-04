@@ -7,7 +7,7 @@ import (
 
 	"github.com/sirupsen/logrus"
 
-	"github.com/pixil98/go-log"
+	"github.com/pixil98/go-log/log"
 )
 
 type WorkerBuilder func(interface{}) (WorkerList, error)

@@ -1,10 +1,10 @@
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
-github.com/pixil98/go-errors v0.0.0-20240204073616-1b0fbb5441fd h1:cHfnxjne7/JIa7iKsjrAnKCsIYbXFGKmjArprXWQ6t8=
-github.com/pixil98/go-errors v0.0.0-20240204073616-1b0fbb5441fd/go.mod h1:TxZ5wa++WexWf1eXctwGEwpqF0Tni9vSVryzOthlkPg=
-github.com/pixil98/go-log v0.0.0-20240204074039-c936e5209448 h1:BSYfjIxxYmxh6G0Lojt76ehqp8sFtkjq7HG6cA2f3Xw=
-github.com/pixil98/go-log v0.0.0-20240204074039-c936e5209448/go.mod h1:KOKA9byGHbsFZnrytR+Rfz0oWPUGlpXvef+2VJOzNZU=
+github.com/pixil98/go-errors v0.0.0-20240204172830-9e726ca64a56 h1:YQtxr2MdvJRsoGgY++cAnVqdlrYaaThlKIh4Mxjsfq8=
+github.com/pixil98/go-errors v0.0.0-20240204172830-9e726ca64a56/go.mod h1:TxZ5wa++WexWf1eXctwGEwpqF0Tni9vSVryzOthlkPg=
+github.com/pixil98/go-log v0.0.0-20240204173152-18aadda54be6 h1:a6GfNVSEtm30374tJRms25oftEnYOf0O4lmANfXQiS4=
+github.com/pixil98/go-log v0.0.0-20240204173152-18aadda54be6/go.mod h1:KOKA9byGHbsFZnrytR+Rfz0oWPUGlpXvef+2VJOzNZU=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/sirupsen/logrus v1.9.3 h1:dueUQJ1C2q9oE3F7wvmSGAaVtTmUizReu6fjN8uqzbQ=
