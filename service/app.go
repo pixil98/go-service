@@ -10,6 +10,10 @@ import (
 	"github.com/pixil98/go-log/log"
 )
 
+type Valitator interface {
+	Validate() error
+}
+
 type WorkerBuilder func(interface{}) (WorkerList, error)
 
 type App struct {
@@ -17,7 +21,7 @@ type App struct {
 	logger  logrus.FieldLogger
 }
 
-func NewApp(config interface{}, wb WorkerBuilder) (*App, error) {
+func NewApp(config Valitator, wb WorkerBuilder) (*App, error) {
 	opts, err := newCmdLineOpts(os.Args[0])
 	if err != nil {
 		return nil, fmt.Errorf("configuring cmdline opts: %w", err)
@@ -36,6 +40,10 @@ func NewApp(config interface{}, wb WorkerBuilder) (*App, error) {
 	err = opts.Config(config)
 	if err != nil {
 		return nil, fmt.Errorf("loading config: %w", err)
+	}
+	err = config.Validate()
+	if err != nil {
+		return nil, fmt.Errorf("validating config: %w", err)
 	}
 
 	workers, err := wb(config)
