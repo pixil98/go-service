@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/pixil98/go-errors v0.0.0-20241009155903-e7db5643855a
-	github.com/pixil98/go-log v0.0.0-20240204173152-18aadda54be6
+	github.com/pixil98/go-log v0.0.0-20241009160017-35fcb07b6f0f
 	github.com/sirupsen/logrus v1.9.3
 )
 
