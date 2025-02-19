@@ -7,6 +7,8 @@ github.com/pixil98/go-errors v0.0.0-20241009155903-e7db5643855a h1:Wm4ULZI8wUuf4
 github.com/pixil98/go-errors v0.0.0-20241009155903-e7db5643855a/go.mod h1:TxZ5wa++WexWf1eXctwGEwpqF0Tni9vSVryzOthlkPg=
 github.com/pixil98/go-log v0.0.0-20240204173152-18aadda54be6 h1:a6GfNVSEtm30374tJRms25oftEnYOf0O4lmANfXQiS4=
 github.com/pixil98/go-log v0.0.0-20240204173152-18aadda54be6/go.mod h1:KOKA9byGHbsFZnrytR+Rfz0oWPUGlpXvef+2VJOzNZU=
+github.com/pixil98/go-log v0.0.0-20241009160017-35fcb07b6f0f h1:Xp41fPG5hPBk35oF07z6BzGBJDUm0HqGhwYnxD/ntzs=
+github.com/pixil98/go-log v0.0.0-20241009160017-35fcb07b6f0f/go.mod h1:KOKA9byGHbsFZnrytR+Rfz0oWPUGlpXvef+2VJOzNZU=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/sirupsen/logrus v1.9.3 h1:dueUQJ1C2q9oE3F7wvmSGAaVtTmUizReu6fjN8uqzbQ=
