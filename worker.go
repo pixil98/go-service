@@ -2,10 +2,10 @@ package service
 
 import (
 	"context"
+	"log/slog"
 	"sync"
 
 	"github.com/pixil98/go-errors"
-	"github.com/pixil98/go-log"
 )
 
 type Worker interface {
@@ -15,8 +15,6 @@ type Worker interface {
 type WorkerList map[string]Worker
 
 func (wl *WorkerList) Start(ctx context.Context) error {
-	logger := log.GetLogger(ctx)
-
 	// Cancel all workers if any one exits
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
@@ -30,14 +28,14 @@ func (wl *WorkerList) Start(ctx context.Context) error {
 			defer cancel()
 			defer wg.Done()
 
-			logger.Infof("starting %s", name)
+			slog.InfoContext(ctx, "starting worker", slog.String("name", name))
 
 			err := w.Start(ctx)
 			if err != nil {
 				errs.Add(err)
 			}
 
-			logger.Infof("exiting %s", name)
+			slog.InfoContext(ctx, "exiting worker", slog.String("name", name))
 		}(name, worker)
 	}
 

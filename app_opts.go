@@ -4,10 +4,8 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"log/slog"
 	"os"
-
-	"github.com/pixil98/go-log"
-	"github.com/sirupsen/logrus"
 )
 
 type cmdLineOpts struct {
@@ -43,16 +41,18 @@ func (o *cmdLineOpts) Parse(args []string) error {
 	return nil
 }
 
-func (o *cmdLineOpts) Logger() (*logrus.Logger, error) {
-	level, err := logrus.ParseLevel(o.loglevel)
+func (o *cmdLineOpts) Logger() (*slog.Logger, error) {
+	var level slog.Level
+	err := level.UnmarshalText([]byte(o.loglevel))
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("invalid log level %q: %w", o.loglevel, err)
 	}
 
-	var loggerOpts []log.LoggerOpt
-	loggerOpts = append(loggerOpts, log.WithLevel(level))
+	handler := slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{
+		Level: level,
+	})
 
-	return log.NewLogger(loggerOpts...), nil
+	return slog.New(handler), nil
 }
 
 func (o *cmdLineOpts) Config(cfg any) error {

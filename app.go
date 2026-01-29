@@ -3,13 +3,10 @@ package service
 import (
 	"context"
 	"fmt"
+	"log/slog"
 	"os"
 	"os/signal"
 	"syscall"
-
-	"github.com/sirupsen/logrus"
-
-	"github.com/pixil98/go-log"
 )
 
 type Validator interface {
@@ -20,7 +17,6 @@ type WorkerBuilder func(any) (WorkerList, error)
 
 type App struct {
 	workers WorkerList
-	logger  logrus.FieldLogger
 }
 
 func NewApp(config Validator, wb WorkerBuilder) (*App, error) {
@@ -38,6 +34,7 @@ func NewApp(config Validator, wb WorkerBuilder) (*App, error) {
 	if err != nil {
 		return nil, fmt.Errorf("configuring logger: %w", err)
 	}
+	slog.SetDefault(logger)
 
 	err = opts.Config(config)
 	if err != nil {
@@ -53,11 +50,10 @@ func NewApp(config Validator, wb WorkerBuilder) (*App, error) {
 		return nil, fmt.Errorf("building workers: %w", err)
 	}
 
-	logger.Info("application initialized")
+	slog.Info("application initialized")
 
 	return &App{
 		workers: workers,
-		logger:  logger,
 	}, nil
 }
 
@@ -65,8 +61,6 @@ func (a *App) Run(ctx context.Context) error {
 	if a.workers == nil {
 		return nil
 	}
-
-	ctx = log.SetLogger(ctx, a.logger)
 
 	ctx, stop := signal.NotifyContext(ctx, os.Interrupt, syscall.SIGTERM)
 	defer stop()

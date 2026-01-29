@@ -3,12 +3,11 @@ package service
 import (
 	"context"
 	"errors"
+	"io"
+	"log/slog"
 	"sync/atomic"
 	"testing"
 	"time"
-
-	"github.com/pixil98/go-log"
-	"github.com/sirupsen/logrus"
 )
 
 type mockWorker struct {
@@ -22,10 +21,9 @@ func (m *mockWorker) Start(ctx context.Context) error {
 	return nil
 }
 
-func testContext() context.Context {
-	logger := logrus.New()
-	logger.SetLevel(logrus.ErrorLevel)
-	return log.SetLogger(context.Background(), logger)
+func init() {
+	// Suppress log output during tests
+	slog.SetDefault(slog.New(slog.NewTextHandler(io.Discard, nil)))
 }
 
 func TestWorkerList_Start(t *testing.T) {
@@ -75,8 +73,7 @@ func TestWorkerList_Start(t *testing.T) {
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			ctx := testContext()
-			err := tt.workers.Start(ctx)
+			err := tt.workers.Start(t.Context())
 			if (err != nil) != tt.wantErr {
 				t.Errorf("WorkerList.Start() error = %v, wantErr %v", err, tt.wantErr)
 			}
@@ -97,7 +94,7 @@ func TestWorkerList_ContextCancellation(t *testing.T) {
 		},
 	}
 
-	ctx, cancel := context.WithCancel(testContext())
+	ctx, cancel := context.WithCancel(t.Context())
 
 	done := make(chan error)
 	go func() {
@@ -135,11 +132,9 @@ func TestWorkerList_OneExitCancelsOthers(t *testing.T) {
 		},
 	}
 
-	ctx := testContext()
-
 	done := make(chan error)
 	go func() {
-		done <- workers.Start(ctx)
+		done <- workers.Start(t.Context())
 	}()
 
 	select {
