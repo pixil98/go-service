@@ -100,7 +100,7 @@ func TestCmdLineOpts_Logger(t *testing.T) {
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			opts := &cmdLineOpts{loglevel: tt.loglevel}
+			opts := &cmdLineOpts{loglevel: tt.loglevel, logformat: "json"}
 			logger, err := opts.Logger()
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Logger() error = %v, wantErr %v", err, tt.wantErr)

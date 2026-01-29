@@ -9,8 +9,9 @@ import (
 )
 
 type cmdLineOpts struct {
-	config   string
-	loglevel string
+	config    string
+	loglevel  string
+	logformat string
 
 	fs flag.FlagSet
 }
@@ -28,6 +29,11 @@ func newCmdLineOpts(name string) (*cmdLineOpts, error) {
 		return nil, fmt.Errorf("loglevel flag already set")
 	}
 	opts.fs.StringVar(&opts.loglevel, "loglevel", "info", "logger log level (debug, info, warn, error)")
+
+	if opts.fs.Lookup("logformat") != nil {
+		return nil, fmt.Errorf("logformat flag already set")
+	}
+	opts.fs.StringVar(&opts.logformat, "logformat", "json", "logger output format (json, text)")
 
 	return opts, nil
 }
@@ -48,9 +54,17 @@ func (o *cmdLineOpts) Logger() (*slog.Logger, error) {
 		return nil, fmt.Errorf("invalid log level %q: %w", o.loglevel, err)
 	}
 
-	handler := slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{
-		Level: level,
-	})
+	opts := &slog.HandlerOptions{Level: level}
+
+	var handler slog.Handler
+	switch o.logformat {
+	case "json":
+		handler = slog.NewJSONHandler(os.Stderr, opts)
+	case "text":
+		handler = slog.NewTextHandler(os.Stderr, opts)
+	default:
+		return nil, fmt.Errorf("invalid log format %q: must be json or text", o.logformat)
+	}
 
 	return slog.New(handler), nil
 }
