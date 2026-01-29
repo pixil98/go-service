@@ -17,5 +17,9 @@ func TypeOf(data []byte) (string, error) {
 		return "", fmt.Errorf("unmarshaling: %w", err)
 	}
 
+	if t.Type == "" {
+		return "", fmt.Errorf("missing or empty type field")
+	}
+
 	return t.Type, nil
 }

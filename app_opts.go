@@ -6,9 +6,8 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/pixil98/go-log"
 	"github.com/sirupsen/logrus"
-
-	"github.com/pixil98/go-log/log"
 )
 
 type cmdLineOpts struct {
@@ -56,7 +55,11 @@ func (o *cmdLineOpts) Logger() (*logrus.Logger, error) {
 	return log.NewLogger(loggerOpts...), nil
 }
 
-func (o *cmdLineOpts) Config(cfg interface{}) error {
+func (o *cmdLineOpts) Config(cfg any) error {
+	if o.config == "" {
+		return fmt.Errorf("config flag is required")
+	}
+
 	raw, err := os.ReadFile(o.config)
 	if err != nil {
 		return fmt.Errorf("reading config: %w", err)

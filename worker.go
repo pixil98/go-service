@@ -4,8 +4,8 @@ import (
 	"context"
 	"sync"
 
-	"github.com/pixil98/go-errors/errors"
-	"github.com/pixil98/go-log/log"
+	"github.com/pixil98/go-errors"
+	"github.com/pixil98/go-log"
 )
 
 type Worker interface {

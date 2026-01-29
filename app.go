@@ -4,24 +4,26 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/sirupsen/logrus"
 
-	"github.com/pixil98/go-log/log"
+	"github.com/pixil98/go-log"
 )
 
-type Valitator interface {
+type Validator interface {
 	Validate() error
 }
 
-type WorkerBuilder func(interface{}) (WorkerList, error)
+type WorkerBuilder func(any) (WorkerList, error)
 
 type App struct {
 	workers WorkerList
 	logger  logrus.FieldLogger
 }
 
-func NewApp(config Valitator, wb WorkerBuilder) (*App, error) {
+func NewApp(config Validator, wb WorkerBuilder) (*App, error) {
 	opts, err := newCmdLineOpts(os.Args[0])
 	if err != nil {
 		return nil, fmt.Errorf("configuring cmdline opts: %w", err)
@@ -65,7 +67,9 @@ func (a *App) Run(ctx context.Context) error {
 	}
 
 	ctx = log.SetLogger(ctx, a.logger)
-	//TODO: Support ctrl-c somehow
+
+	ctx, stop := signal.NotifyContext(ctx, os.Interrupt, syscall.SIGTERM)
+	defer stop()
 
 	return a.workers.Start(ctx)
 }
