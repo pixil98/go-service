@@ -2,10 +2,9 @@ package service
 
 import (
 	"context"
+	"errors"
 	"log/slog"
 	"sync"
-
-	"github.com/pixil98/go-errors"
 )
 
 type Worker interface {
@@ -19,8 +18,11 @@ func (wl *WorkerList) Start(ctx context.Context) error {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
-	var wg sync.WaitGroup
-	errs := errors.NewErrorList()
+	var (
+		wg   sync.WaitGroup
+		mu   sync.Mutex
+		errs []error
+	)
 	for name, worker := range *wl {
 		wg.Add(1)
 
@@ -32,7 +34,9 @@ func (wl *WorkerList) Start(ctx context.Context) error {
 
 			err := w.Start(ctx)
 			if err != nil {
-				errs.Add(err)
+				mu.Lock()
+				errs = append(errs, err)
+				mu.Unlock()
 			}
 
 			slog.InfoContext(ctx, "exiting worker", slog.String("name", name))
@@ -41,5 +45,5 @@ func (wl *WorkerList) Start(ctx context.Context) error {
 
 	wg.Wait()
 
-	return errs.Err()
+	return errors.Join(errs...)
 }
